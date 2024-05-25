@@ -1,38 +1,35 @@
-FROM golang:1.22-alpine AS builder
+##
+## Build the application from source
+##
 
-ARG ENVIRONMENT=development
+FROM golang:1.20 AS build-stage
 
-ENV ENV=${ENVIRONMENT}
-ENV PATH="/usr/local/go/bin:${PATH}"
+WORKDIR /app
 
-WORKDIR /backend-collection-api
+COPY go.mod go.sum ./
+RUN go mod download
 
 COPY . .
+COPY apps/mutation/.env ./.env.application
 
-# COPY environment-specific .env*
-COPY .env.${ENV} .env.application
+RUN CGO_ENABLED=0 GOOS=linux go build -o /mutation apps/mutation/main.go
 
-RUN apk update && apk add --no-cache gcc libc-dev && \
-    go version && go mod download && go mod verify && \
-    CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -ldflags "-X main.version=1.0.0 -X main.buildTime=$(date +%Y-%m-%d) -s -w" -o ./backend-collection-api
+##
+## Run the tests in the container
+##
 
-#
-FROM alpine:3.18
+FROM build-stage AS run-test-stage
+RUN go test -v ./...
 
-ENV TZ=Asia/Jakarta
+##
+## Deploy the application binary into a lean image
+##
 
-WORKDIR /backend-collection-api
+FROM gcr.io/distroless/base-debian11 AS build-release-stage
 
-RUN apk update && \
-    apk add --no-cache tzdata
+WORKDIR /
 
-COPY --from=builder /backend-collection-api/backend-collection-api .
-COPY --from=builder /backend-collection-api/.env.application .env
-COPY --from=builder /backend-collection-api/go.mod go.mod
+COPY --from=build-stage /mutation /mutation
+COPY --from=build-stage /app/.env.application .env
 
-RUN chmod +x ./backend-collection-api
-
-EXPOSE 80
-EXPOSE 443 
-
-CMD ["./backend-collection-api"]
+ENTRYPOINT ["/mutation"]

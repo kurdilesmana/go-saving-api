@@ -64,7 +64,7 @@ func (h *AccountHandler) CreateHandler(ctx echo.Context) error {
 		return web.ResponseFormatter(ctx, http.StatusBadRequest, err.Error(), nil, err)
 	}
 
-	return web.ResponseFormatter(ctx, http.StatusOK, "Success", respData, nil)
+	return web.ResponseFormatter(ctx, http.StatusCreated, "Success", respData, nil)
 }
 
 // InquiryHandler godoc

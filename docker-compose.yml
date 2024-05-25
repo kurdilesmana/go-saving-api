@@ -51,6 +51,26 @@ services:
             cache:
                 condition: service_started
 
+    mutation:
+        image: svc-saving-mutation
+        container_name: svc-saving-mutation
+        restart: unless-stopped
+        env_file: .env
+        networks:
+            - svc-saving
+        ports:
+            - 8182:3002
+        build:
+            context: .
+            dockerfile: docker/mutation.Dockerfile
+            args:
+                INSTALL_DEV: ${INSTALL_DEV-false}
+        depends_on:
+            db:
+                condition: service_healthy # waiting until heathcheck
+            cache:
+                condition: service_started
+
 networks:
     svc-saving:
         driver: bridge
