@@ -1,0 +1,60 @@
+services:
+    db:
+        image: postgres
+        container_name: svc-saving-db
+        env_file: .env
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+        networks:
+            - svc-saving
+        ports:
+            - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+        volumes:
+            - dbdata:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    cache:
+        image: redis
+        container_name: svc-saving-cache
+        env_file:
+            - .env
+        networks:
+            - svc-saving
+        ports:
+            - "6379:6379"
+        volumes:
+            - cache:/data
+
+    account:
+        image: svc-saving-account
+        container_name: svc-saving-account
+        restart: unless-stopped
+        env_file: .env
+        networks:
+            - svc-saving
+        ports:
+            - 8181:3001
+        build:
+            context: .
+            dockerfile: docker/account.Dockerfile
+            args:
+                INSTALL_DEV: ${INSTALL_DEV-false}
+        depends_on:
+            db:
+                condition: service_healthy # waiting until heathcheck
+            cache:
+                condition: service_started
+
+networks:
+    svc-saving:
+        driver: bridge
+
+volumes:
+    dbdata:
+    cache:

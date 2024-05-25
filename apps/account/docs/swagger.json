@@ -1,0 +1,271 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This is API Documentation for Account Swagger Services.",
+        "title": "Account Swagger API Documentation",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "2.0"
+    },
+    "basePath": "/api/v1",
+    "paths": {
+        "/daftar": {
+            "post": {
+                "description": "Create For Account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "API Create Account",
+                "parameters": [
+                    {
+                        "description": "Request Parameters",
+                        "name": "CreateAccountRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/accountModel.CreateAccountRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response Success",
+                        "schema": {
+                            "$ref": "#/definitions/accountModel.CreateAccountResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/inquiry": {
+            "get": {
+                "description": "Inquiry For Account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "API Inquiry Account",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "Basic NjI4MjE2NzU1MzYzNDQwMDAxOjEyMzQ1Ng==",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response Success",
+                        "schema": {
+                            "$ref": "#/definitions/accountModel.Account"
+                        }
+                    }
+                }
+            }
+        },
+        "/tabung": {
+            "post": {
+                "description": "Saving For Account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "API Saving Account",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "Basic NjI4MjE2NzU1MzYzNDQwMDAxOjEyMzQ1Ng==",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Request Parameters",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/transactionModel.SavingRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response Success",
+                        "schema": {
+                            "$ref": "#/definitions/transactionModel.TransactionResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/tarik": {
+            "post": {
+                "description": "CashWithdrawl For Account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "API CashWithdrawl Account",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "Basic NjI4MjE2NzU1MzYzNDQwMDAxOjEyMzQ1Ng==",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Request Parameters",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/transactionModel.CashWithdrawlRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response Success",
+                        "schema": {
+                            "$ref": "#/definitions/transactionModel.TransactionResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "accountModel.Account": {
+            "type": "object",
+            "properties": {
+                "account_no": {
+                    "type": "string"
+                },
+                "balance": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "pin": {
+                    "type": "string"
+                }
+            }
+        },
+        "accountModel.CreateAccountRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "phone_number",
+                "pin"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "pin": {
+                    "type": "string"
+                }
+            }
+        },
+        "accountModel.CreateAccountResponse": {
+            "type": "object",
+            "required": [
+                "account_no",
+                "balance"
+            ],
+            "properties": {
+                "account_no": {
+                    "type": "string"
+                },
+                "balance": {
+                    "type": "number"
+                }
+            }
+        },
+        "transactionModel.CashWithdrawlRequest": {
+            "type": "object",
+            "required": [
+                "amount"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number",
+                    "minimum": 1
+                }
+            }
+        },
+        "transactionModel.SavingRequest": {
+            "type": "object",
+            "required": [
+                "amount"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number",
+                    "minimum": 1
+                }
+            }
+        },
+        "transactionModel.TransactionResponse": {
+            "type": "object",
+            "required": [
+                "account_no",
+                "balance"
+            ],
+            "properties": {
+                "account_no": {
+                    "type": "string"
+                },
+                "balance": {
+                    "type": "number"
+                }
+            }
+        }
+    }
+}

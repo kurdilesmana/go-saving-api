@@ -1,0 +1,181 @@
+basePath: /api/v1
+definitions:
+  accountModel.Account:
+    properties:
+      account_no:
+        type: string
+      balance:
+        type: number
+      name:
+        type: string
+      phone_number:
+        type: string
+      pin:
+        type: string
+    type: object
+  accountModel.CreateAccountRequest:
+    properties:
+      name:
+        type: string
+      phone_number:
+        type: string
+      pin:
+        type: string
+    required:
+    - name
+    - phone_number
+    - pin
+    type: object
+  accountModel.CreateAccountResponse:
+    properties:
+      account_no:
+        type: string
+      balance:
+        type: number
+    required:
+    - account_no
+    - balance
+    type: object
+  transactionModel.CashWithdrawlRequest:
+    properties:
+      amount:
+        minimum: 1
+        type: number
+    required:
+    - amount
+    type: object
+  transactionModel.SavingRequest:
+    properties:
+      amount:
+        minimum: 1
+        type: number
+    required:
+    - amount
+    type: object
+  transactionModel.TransactionResponse:
+    properties:
+      account_no:
+        type: string
+      balance:
+        type: number
+    required:
+    - account_no
+    - balance
+    type: object
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is API Documentation for Account Swagger Services.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Account Swagger API Documentation
+  version: "2.0"
+paths:
+  /daftar:
+    post:
+      consumes:
+      - application/json
+      description: Create For Account
+      parameters:
+      - description: Request Parameters
+        in: body
+        name: CreateAccountRequest
+        required: true
+        schema:
+          $ref: '#/definitions/accountModel.CreateAccountRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response Success
+          schema:
+            $ref: '#/definitions/accountModel.CreateAccountResponse'
+      summary: API Create Account
+      tags:
+      - Account
+  /inquiry:
+    get:
+      consumes:
+      - application/json
+      description: Inquiry For Account
+      parameters:
+      - description: Authorization
+        example: Basic NjI4MjE2NzU1MzYzNDQwMDAxOjEyMzQ1Ng==
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response Success
+          schema:
+            $ref: '#/definitions/accountModel.Account'
+      summary: API Inquiry Account
+      tags:
+      - Account
+  /tabung:
+    post:
+      consumes:
+      - application/json
+      description: Saving For Account
+      parameters:
+      - description: Authorization
+        example: Basic NjI4MjE2NzU1MzYzNDQwMDAxOjEyMzQ1Ng==
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Request Parameters
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/transactionModel.SavingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response Success
+          schema:
+            $ref: '#/definitions/transactionModel.TransactionResponse'
+      summary: API Saving Account
+      tags:
+      - Account
+  /tarik:
+    post:
+      consumes:
+      - application/json
+      description: CashWithdrawl For Account
+      parameters:
+      - description: Authorization
+        example: Basic NjI4MjE2NzU1MzYzNDQwMDAxOjEyMzQ1Ng==
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Request Parameters
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/transactionModel.CashWithdrawlRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response Success
+          schema:
+            $ref: '#/definitions/transactionModel.TransactionResponse'
+      summary: API CashWithdrawl Account
+      tags:
+      - Account
+schemes:
+- http
+- https
+swagger: "2.0"
