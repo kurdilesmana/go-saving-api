@@ -39,7 +39,7 @@ services:
         networks:
             - svc-saving
         ports:
-            - 8181:3001
+            - "${ACC_APP_PORT}:${ACC_APP_PORT}"
         build:
             context: .
             dockerfile: docker/account.Dockerfile
@@ -59,7 +59,7 @@ services:
         networks:
             - svc-saving
         ports:
-            - 8182:3002
+            - "${MUT_APP_PORT}:${MUT_APP_PORT}"
         build:
             context: .
             dockerfile: docker/mutation.Dockerfile

@@ -1,29 +1,30 @@
-# README #
+# Tabungan API Go
 
-This README would normally document whatever steps are necessary to get your application up and running.
+## Run APP
+1. Clone this repository
+2. Copy file .env.example to .env
+3. Run using command below
+```
+docker-compose up
+```
 
-### What is this repository for? ###
+## Run Test
+```
+go test -v 
+```
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+## Docs 
+For docs access on this link localhost:port/api/v1/docs/index.html
 
-### How do I get set up? ###
+## Following endpoints:
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+| Method | Route     | Header                               |  Body                                                       |
+| ------ | --------- | ------------------------------------ | ----------------------------------------------------------- |
+| POST   | /daftar   |                                      |  `{"name": "Dian", "phone_number": "0821", "pin": "1234" }` |
+| POST   | /tabung   | Basic Auth, using account_no dan pin |  `{"amount": 50000}`                                        |
+| POST   | /tarik    | Basic Auth, using account_no dan pin |  `{"amount": 50000}`                                        |
 
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+* Note: 
+* Basic AUth can generated online using this link https://www.debugbear.com/basic-auth-header-generator,
+* fil username using account_no, and password using pin.
+* result generated copy to header. Ecample -> Authorization: Basic am9obkBleGFtcGxlLmNvbTphYmMxMjM=

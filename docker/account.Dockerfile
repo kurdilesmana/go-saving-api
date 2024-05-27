@@ -10,7 +10,6 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-COPY apps/account/.env ./.env.application
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /account apps/account/main.go
 
@@ -30,6 +29,6 @@ FROM gcr.io/distroless/base-debian11 AS build-release-stage
 WORKDIR /
 
 COPY --from=build-stage /account /account
-COPY --from=build-stage /app/.env.application .env
+COPY --from=build-stage /app/.env .env
 
 ENTRYPOINT ["/account"]

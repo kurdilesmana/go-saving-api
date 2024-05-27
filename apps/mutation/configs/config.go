@@ -41,7 +41,7 @@ func LoadENVConfig() (config EnvironmentConfig, err error) {
 		return EnvironmentConfig{}, err
 	}
 
-	port, err := strconv.Atoi(os.Getenv("APP_PORT"))
+	port, err := strconv.Atoi(os.Getenv("MUT_APP_PORT"))
 	if err != nil {
 		err = fmt.Errorf("error when convert string to int: %w", err)
 	}
@@ -49,10 +49,10 @@ func LoadENVConfig() (config EnvironmentConfig, err error) {
 	config = EnvironmentConfig{
 		Env: os.Getenv("ENV"),
 		AppConfig: AppConfig{
-			Name:           os.Getenv("APP_NAME"),
-			Version:        os.Getenv("APP_VERSION"),
+			Name:           os.Getenv("MUT_APP_NAME"),
+			Version:        os.Getenv("MUT_APP_VERSION"),
 			Port:           port,
-			MaxRequestTime: cast.ToInt(os.Getenv("APP_MAX_REQUEST_TIME")),
+			MaxRequestTime: cast.ToInt(os.Getenv("MUT_APP_MAX_REQUEST_TIME")),
 		},
 		MUTDatabase: MUTDatabase{
 			MUTEngine:          os.Getenv("MUT_DATABASE_ENGINE"),
